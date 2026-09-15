@@ -7,8 +7,8 @@
     "편집": "편집 (Edit)",
     "View": "보기 (View)",
     "보기": "보기 (View)",
-    "Window": "창크기 (Window)",
-    "창크기": "창크기 (Window)",
+    "Window": "윈도우 (Window)",
+    "창크기": "윈도우 (Window)",
     "Help": "도움말 (Help)",
     "도움말": "도움말 (Help)",
     "New Window": "새 창 (New Window)",
@@ -488,7 +488,9 @@
     "Generating...": "생성 중... (Generating...)",
     "Searching...": "검색 중... (Searching...)",
     "Reading...": "읽는 중... (Reading...)",
-    "Running...": "실행 중... (Running...)"
+    "Running...": "실행 중... (Running...)",
+    "창크기 (Window)": "윈도우 (Window)",
+    "윈도우": "윈도우 (Window)"
   },
   "placeholders": {
     "Ask a question, describe a task, or use / for commands": "질문하거나 작업을 설명하세요 (명령어: /)",

@@ -43,9 +43,9 @@
     "View": "보기",
     "보기 (View)": "보기",
     "보기": "보기",
-    "Window": "창크기",
-    "창크기 (Window)": "창크기",
-    "창크기": "창크기",
+    "Window": "윈도우",
+    "윈도우 (Window)": "윈도우",
+    "창크기": "윈도우",
     "Help": "도움말",
     "도움말 (Help)": "도움말",
     "도움말": "도움말",
@@ -756,6 +756,8 @@
     "읽는 중... (Reading...)": "읽는 중...",
     "Running...": "실행 중...",
     "실행 중... (Running...)": "실행 중...",
+    "창크기 (Window)": "윈도우",
+    "윈도우": "윈도우",
     "일반 (General)": "일반"
 };
   const BILINGUAL_EXACT = {
@@ -765,8 +767,8 @@
     "편집": "편집 (Edit)",
     "View": "보기 (View)",
     "보기": "보기 (View)",
-    "Window": "창크기 (Window)",
-    "창크기": "창크기 (Window)",
+    "Window": "윈도우 (Window)",
+    "창크기": "윈도우 (Window)",
     "Help": "도움말 (Help)",
     "도움말": "도움말 (Help)",
     "New Window": "새 창 (New Window)",
@@ -1246,7 +1248,9 @@
     "Generating...": "생성 중... (Generating...)",
     "Searching...": "검색 중... (Searching...)",
     "Reading...": "읽는 중... (Reading...)",
-    "Running...": "실행 중... (Running...)"
+    "Running...": "실행 중... (Running...)",
+    "창크기 (Window)": "윈도우 (Window)",
+    "윈도우": "윈도우 (Window)"
 };
   const EXACT = isBilingual ? BILINGUAL_EXACT : KOREAN_EXACT;
   const PLACEHOLDERS = {
