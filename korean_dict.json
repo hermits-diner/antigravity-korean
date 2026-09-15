@@ -156,7 +156,14 @@
     "Minimize": "최소화",
     "minimize": "최소화",
     "Maximize": "최대화",
-    "maximize": "최대화"
+    "maximize": "최대화",
+    "View Usage": "사용량",
+    "View usage": "사용량",
+    "Usage": "사용량",
+    "Gemini Models": "Gemini 모델",
+    "Claude and GPT models": "Claude 및 GPT 모델",
+    "Weekly Limit Remaining": "주간 남은 한도",
+    "Five Hour Limit Remaining": "5시간 남은 한도"
   },
   "placeholders": {
     "Ask a question, describe a task, or use / for commands": "질문하거나 작업을 설명하세요 (명령어: /)",
