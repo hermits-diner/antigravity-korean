@@ -166,7 +166,11 @@
     "Gemini Models": "Gemini 모델",
     "Claude and GPT models": "Claude 및 GPT 모델",
     "Weekly Limit Remaining": "주간 남은 한도",
-    "Five Hour Limit Remaining": "5시간 남은 한도"
+    "Five Hour Limit Remaining": "5시간 남은 한도",
+    "Go Back": "이전",
+    "Go back": "이전",
+    "Go Forward": "다음",
+    "Go forward": "다음"
 };
   const PLACEHOLDERS = {
     "Ask a question, describe a task, or use / for commands": "질문하거나 작업을 설명하세요 (명령어: /)",
