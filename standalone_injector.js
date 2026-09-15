@@ -155,7 +155,11 @@
     "File Picker": "파일찾기",
     "File picker": "파일찾기",
     "Open File Picker": "파일찾기",
-    "Open file picker": "파일찾기"
+    "Open file picker": "파일찾기",
+    "Minimize": "최소화",
+    "minimize": "최소화",
+    "Maximize": "최대화",
+    "maximize": "최대화"
 };
   const PLACEHOLDERS = {
     "Ask a question, describe a task, or use / for commands": "질문하거나 작업을 설명하세요 (명령어: /)",
