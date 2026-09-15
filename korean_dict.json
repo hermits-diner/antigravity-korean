@@ -167,7 +167,21 @@
     "Go Back": "이전",
     "Go back": "이전",
     "Go Forward": "다음",
-    "Go forward": "다음"
+    "Go forward": "다음",
+    "General": "일반설정",
+    "general": "일반설정",
+    "Application": "앱설정",
+    "application": "앱설정",
+    "Chat Setting": "대화창 세팅",
+    "Chat Settings": "대화창 세팅",
+    "chat setting": "대화창 세팅",
+    "chat settings": "대화창 세팅",
+    "Dark Theme": "어두운 테마",
+    "Dark theme": "어두운 테마",
+    "Light Theme": "밝은 테마",
+    "Light theme": "밝은 테마",
+    "Theme": "테마",
+    "theme": "테마"
   },
   "placeholders": {
     "Ask a question, describe a task, or use / for commands": "질문하거나 작업을 설명하세요 (명령어: /)",
