@@ -3,62 +3,48 @@ chcp 65001 > nul
 setlocal enabledelayedexpansion
 
 echo ========================================================
-echo        Google Antigravity 한글 패치 삭제 (원상 복원)
+echo     Google Antigravity 에코시스템 한글 패치 삭제 (원복)
 echo ========================================================
 echo.
 
-set "TARGET_DIR=%LOCALAPPDATA%\Programs\Antigravity\resources"
-set "APP_EXE=%LOCALAPPDATA%\Programs\Antigravity\Antigravity.exe"
+set "APP20_DIR=%LOCALAPPDATA%\Programs\Antigravity\resources"
+set "IDE_DIR=%LOCALAPPDATA%\Programs\Antigravity IDE"
+set "IDE_EXT_DIR=%IDE_DIR%\resources\app\extensions\antigravity"
 set "GEMINI_DIR=%USERPROFILE%\.gemini"
 set "RULE_FILE=%GEMINI_DIR%\GEMINI.md"
 
-if not exist "%TARGET_DIR%" (
-    echo [오류] Antigravity 설치 경로를 찾을 수 없습니다.
-    echo 확인된 경로: %TARGET_DIR%
-    pause
-    exit /b 1
-)
-
-echo [1/3] 실행 중인 Antigravity 프로세스를 확인하고 있습니다...
-tasklist /fi "imagename eq Antigravity.exe" 2>nul | find /i "Antigravity.exe" >nul
-if %errorlevel% equ 0 (
-    echo Antigravity가 실행 중입니다. 안전한 복원을 위해 앱을 종료합니다...
-    taskkill /f /im Antigravity.exe >nul 2>&1
-    timeout /t 2 /nobreak >nul
-)
+echo [1/4] 실행 중인 프로세스를 확인하고 종료합니다...
+taskkill /f /im Antigravity.exe >nul 2>&1
+taskkill /f /im "Antigravity IDE.exe" >nul 2>&1
+timeout /t 1 /nobreak >nul
 echo      - 완료되었습니다.
 echo.
 
-echo [2/3] 백업된 원본 파일을 복원하고 있습니다...
-if exist "%TARGET_DIR%\app.asar.original.bak" (
-    copy /y "%TARGET_DIR%\app.asar.original.bak" "%TARGET_DIR%\app.asar" >nul
-    echo      - app.asar가 최초 원본 파일로 복원되었습니다.
-) else (
-    echo [경고] app.asar.original.bak 백업 파일이 없습니다.
-    echo Antigravity를 재설치하시면 완전히 초기화할 수 있습니다.
-    pause
-    exit /b 1
+echo [2/4] Antigravity 2.0 원본 파일을 복원합니다...
+if exist "%APP20_DIR%\app.asar.original.bak" (
+    copy /y "%APP20_DIR%\app.asar.original.bak" "%APP20_DIR%\app.asar" >nul
+    del /f /q "%APP20_DIR%\korean_dict.json" >nul 2>&1
+    echo      - Antigravity 2.0 app.asar 원본 복원 완료.
 )
+echo.
 
-if exist "%TARGET_DIR%\korean_dict.json" (
-    del /f /q "%TARGET_DIR%\korean_dict.json" >nul 2>&1
+echo [3/4] Antigravity IDE 패치 내용을 복원합니다...
+if exist "%IDE_EXT_DIR%\cascade-panel.html.bak" (
+    copy /y "%IDE_EXT_DIR%\cascade-panel.html.bak" "%IDE_EXT_DIR%\cascade-panel.html" >nul
+    del /f /q "%IDE_EXT_DIR%\cascade-panel.html.bak" >nul 2>&1
+    del /f /q "%IDE_EXT_DIR%\standalone_injector.js" >nul 2>&1
+    echo      - Antigravity IDE cascade-panel.html 원본 복원 완료.
 )
+echo.
 
+echo [4/4] 공통 AI 에이전트 규칙 파일을 복원합니다...
 if exist "%RULE_FILE%.bak" (
     copy /y "%RULE_FILE%.bak" "%RULE_FILE%" >nul 2>&1
     del /f /q "%RULE_FILE%.bak" >nul 2>&1
-    echo      - AI 에이전트 규칙 파일(GEMINI.md)이 이전 백업으로 복원되었습니다.
+    echo      - GEMINI.md 규칙 파일 이전 백업 복원 완료.
 )
 echo.
 
-echo [3/3] 원본 복원이 성공적으로 완료되었습니다!
-echo.
-set /p RUN_APP="지금 바로 Antigravity를 실행하시겠습니까? (Y/N): "
-if /i "%RUN_APP%"=="Y" (
-    if exist "%APP_EXE%" (
-        start "" "%APP_EXE%"
-    )
-)
-
-timeout /t 2 >nul
+echo 원본 복원이 성공적으로 완료되었습니다!
+timeout /t 3 >nul
 exit /b 0

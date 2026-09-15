@@ -1,17 +1,18 @@
-# Google Antigravity 2.0 한글 패치 🇰🇷
-> **Google Antigravity(앤티그래비티)** 데스크톱 앱을 위한 비침습적 오픈소스 한글 패치 프로젝트입니다.
+# Google Antigravity 에코시스템 통합 한글 패치 🇰🇷
+> **Google Antigravity 2.0(데스크톱 앱)** 및 **Antigravity IDE(VS Code 기반)**를 모두 지원하는 비침습적 오픈소스 한글 패치 프로젝트입니다.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows-0078D6.svg)](https://github.com/hermits-diner)
-[![Antigravity](https://img.shields.io/badge/Antigravity-2.0-orange.svg)](https://antigravity.google)
+[![Antigravity](https://img.shields.io/badge/Antigravity-2.0%20%26%20IDE-orange.svg)](https://antigravity.google)
 
 ---
 
 ## ✨ 주요 특징
 
-1. **원클릭 자동 설치 (`install.bat`)**
-   - 별도의 개발 도구(Python, Node.js 등) 설치 없이 배치 파일 실행 한 번으로 설치 완료
-   - 실행 중인 Antigravity 프로세스 감지 및 안전 종료 후 패치 적용
+1. **Antigravity 2.0 & Antigravity IDE 동시 지원 (`install.bat`)**
+   - **Antigravity 2.0**: 데스크톱 앱 네이티브 메뉴 및 채팅 화면 전체 UI 한글화
+   - **Antigravity IDE**: 한국어 언어 로캘 자동 세팅 및 사이드바 AI 패널(Cascade) 실시간 한글화
+   - 별도의 개발 도구(Python, Node.js 등) 없이 배치 파일 실행 한 번으로 자동 감지 및 설치 완료
 
 2. **1초 원클릭 원본 복원 (`uninstall.bat`)**
    - 패치 전 최초의 `app.asar`를 자동으로 안전 백업(`app.asar.original.bak`)
