@@ -184,7 +184,21 @@
     "Light Theme": "밝은 테마",
     "Light theme": "밝은 테마",
     "Theme": "테마",
-    "theme": "테마"
+    "theme": "테마",
+    "Remote Control": "리모컨",
+    "Remote control": "리모컨",
+    "Enable Remote Control": "리모컨 활성화",
+    "Version": "버젼",
+    "version": "버젼",
+    "App version": "앱 버젼",
+    "Model & Usage": "모델 및 한도",
+    "Models & Usage": "모델 및 한도",
+    "Model and Usage": "모델 및 한도",
+    "Models and Usage": "모델 및 한도",
+    "Plan": "플랜",
+    "plan": "플랜",
+    "Model Credits": "크레딧사용여부",
+    "Model credits": "크레딧사용여부"
 };
   const PLACEHOLDERS = {
     "Ask a question, describe a task, or use / for commands": "질문하거나 작업을 설명하세요 (명령어: /)",
@@ -231,7 +245,20 @@
     const val = node.nodeValue;
     if (!val) return;
     const trimmed = val.trim();
-    if (!trimmed || translatedValues.has(trimmed)) return;
+    if (!trimmed) return;
+
+    // 사이드바의 General은 '일반설정', 앱설정 등 본문 내부의 General은 '일반'
+    if (trimmed === 'General' || trimmed === '일반설정') {
+      const isSidebarNav = node.parentElement && node.parentElement.closest('[data-testid="settings-nav-item-General"]');
+      const targetText = isSidebarNav ? '일반설정' : '일반';
+      if (trimmed !== targetText) {
+        processedNodes.add(node);
+        node.nodeValue = val.replace(trimmed, targetText);
+      }
+      return;
+    }
+
+    if (translatedValues.has(trimmed)) return;
 
     if (EXACT[trimmed]) {
       processedNodes.add(node);
@@ -296,7 +323,9 @@
           acceptNode: function (node) {
             if (shouldIgnore(node.parentElement)) return NodeFilter.FILTER_REJECT;
             const text = node.nodeValue ? node.nodeValue.trim() : '';
-            if (!text || translatedValues.has(text)) return NodeFilter.FILTER_REJECT;
+            if (!text) return NodeFilter.FILTER_REJECT;
+            if (text === 'General' || text === '일반설정') return NodeFilter.FILTER_ACCEPT;
+            if (translatedValues.has(text)) return NodeFilter.FILTER_REJECT;
             if (EXACT[text]) return NodeFilter.FILTER_ACCEPT;
             return NodeFilter.FILTER_SKIP;
           }

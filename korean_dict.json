@@ -181,7 +181,21 @@
     "Light Theme": "밝은 테마",
     "Light theme": "밝은 테마",
     "Theme": "테마",
-    "theme": "테마"
+    "theme": "테마",
+    "Remote Control": "리모컨",
+    "Remote control": "리모컨",
+    "Enable Remote Control": "리모컨 활성화",
+    "Version": "버젼",
+    "version": "버젼",
+    "App version": "앱 버젼",
+    "Model & Usage": "모델 및 한도",
+    "Models & Usage": "모델 및 한도",
+    "Model and Usage": "모델 및 한도",
+    "Models and Usage": "모델 및 한도",
+    "Plan": "플랜",
+    "plan": "플랜",
+    "Model Credits": "크레딧사용여부",
+    "Model credits": "크레딧사용여부"
   },
   "placeholders": {
     "Ask a question, describe a task, or use / for commands": "질문하거나 작업을 설명하세요 (명령어: /)",
