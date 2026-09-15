@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*.log
+.vscode/
+.idea/
+
+# Antigravity temporary
+unpacked/
+unpacked_cur/
+temp/
+
+# User images
+*.jpg
+*.jpeg
+*.png
