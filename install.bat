@@ -170,8 +170,10 @@ echo.
 
 echo [5/5] 모든 한글화 설정이 성공적으로 완료되었습니다!
 echo.
-echo [*] 참고: 앱 상단 메뉴바의 [언어 (Language)] 메뉴에서 언제든
-echo     [순수 한글] / [한영 병기] / [영문 원본] 모드를 자유롭게 전환할 수 있습니다.
+echo [*] [언어 설정 변경 방법]:
+echo     1) 화면 우측 하단의 [🌐 언어 위젯]을 클릭하여 실시간 모드 변경
+echo     2) 키보드 단축키 [Ctrl + Shift + L]로 간편 순환 변경
+echo     3) [Alt] 키를 눌러 상단 메뉴바의 [언어 (Language)] 메뉴에서 변경
 echo.
 echo 1) Antigravity 2.0 실행
 echo 2) Antigravity IDE 실행

@@ -24,12 +24,6 @@
   const currentMode = window.__antigravity_get_lang_mode();
   console.log('[Antigravity-i18n] Active localization mode:', currentMode);
 
-  // 영문 원본 모드인 경우 번역 로직 종료
-  if (currentMode === MODES.OFF) {
-    console.log('[Antigravity-i18n] Running in original English mode.');
-    return;
-  }
-
   const isBilingual = currentMode === MODES.BILINGUAL;
 
   const KOREAN_EXACT = {
@@ -1514,6 +1508,211 @@
     }
   }
 
+
+  function getModeLabel(mode) {
+    if (mode === MODES.KOREAN) return '순수 한글';
+    if (mode === MODES.BILINGUAL) return '한영 병기';
+    if (mode === MODES.OFF) return 'English';
+    return mode;
+  }
+
+  function showToast(msg) {
+    const toast = document.createElement('div');
+    toast.setAttribute('style', `
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(17, 24, 39, 0.95);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      z-index: 999999999;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      transition: opacity 0.3s ease;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    `);
+    toast.innerText = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 300);
+    }, 1800);
+  }
+
+  function setupLanguageSwitcher() {
+    if (!document.body || document.getElementById('antigravity-lang-switcher')) return;
+
+    // 단축키 등록: Ctrl + Shift + L
+    if (!window.__antigravity_shortcut_registered) {
+      window.__antigravity_shortcut_registered = true;
+      window.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l' || e.code === 'KeyL')) {
+          e.preventDefault();
+          let nextMode = MODES.BILINGUAL;
+          if (currentMode === MODES.BILINGUAL) nextMode = MODES.KOREAN;
+          else if (currentMode === MODES.KOREAN) nextMode = MODES.OFF;
+          else if (currentMode === MODES.OFF) nextMode = MODES.BILINGUAL;
+
+          showToast('언어 모드 변경: ' + getModeLabel(nextMode));
+          setTimeout(() => {
+            window.__antigravity_set_lang_mode(nextMode);
+          }, 350);
+        }
+      });
+    }
+
+    // 사용자가 위젯 숨김을 선택했는지 확인
+    if (localStorage.getItem('antigravity_hide_lang_widget') === 'true') {
+      return;
+    }
+
+    const container = document.createElement('div');
+    container.id = 'antigravity-lang-switcher';
+    container.setAttribute('style', `
+      position: fixed;
+      bottom: 14px;
+      right: 14px;
+      z-index: 99999999;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 12px;
+      user-select: none;
+    `);
+
+    const btn = document.createElement('button');
+    btn.id = 'antigravity-lang-btn';
+    btn.title = '언어 모드 전환 (단축키: Ctrl+Shift+L)';
+    btn.innerHTML = `<span style="margin-right: 4px;">🌐</span><span>${getModeLabel(currentMode)}</span><span style="font-size: 9px; opacity: 0.7; margin-left: 3px;">▾</span>`;
+    btn.setAttribute('style', `
+      background: rgba(26, 27, 30, 0.85);
+      color: #d1d5db;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 16px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      transition: all 0.2s ease;
+      outline: none;
+    `);
+
+    btn.onmouseenter = () => {
+      btn.style.background = 'rgba(38, 40, 44, 0.95)';
+      btn.style.borderColor = 'rgba(255, 255, 255, 0.35)';
+      btn.style.color = '#ffffff';
+      btn.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.35)';
+    };
+    btn.onmouseleave = () => {
+      btn.style.background = 'rgba(26, 27, 30, 0.85)';
+      btn.style.borderColor = 'rgba(255, 255, 255, 0.18)';
+      btn.style.color = '#d1d5db';
+      btn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
+    };
+
+    const menu = document.createElement('div');
+    menu.id = 'antigravity-lang-menu';
+    menu.setAttribute('style', `
+      display: none;
+      position: absolute;
+      bottom: 30px;
+      right: 0;
+      width: 195px;
+      background: #1e1f23;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      padding: 6px;
+      flex-direction: column;
+      gap: 2px;
+    `);
+
+    const options = [
+      { id: MODES.BILINGUAL, label: '🌐 한영 병기 (Bilingual)', desc: '한국어 + 영문 동시 표기' },
+      { id: MODES.KOREAN, label: '🇰🇷 순수 한글 (Pure Korean)', desc: '깔끔한 한국어 전용' },
+      { id: MODES.OFF, label: '🇺🇸 영문 원본 (English)', desc: '오리지널 영문 모드' }
+    ];
+
+    options.forEach(opt => {
+      const item = document.createElement('div');
+      const isSelected = currentMode === opt.id;
+      item.setAttribute('style', `
+        padding: 6px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        background: ${isSelected ? 'rgba(59, 130, 246, 0.2)' : 'transparent'};
+        border: 1px solid ${isSelected ? 'rgba(59, 130, 246, 0.4)' : 'transparent'};
+        transition: background 0.15s;
+      `);
+      item.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: ${isSelected ? '600' : '400'}; color: ${isSelected ? '#60a5fa' : '#e5e7eb'}; font-size: 12px;">${opt.label}</span>
+          ${isSelected ? '<span style="color: #60a5fa; font-size: 11px;">✓</span>' : ''}
+        </div>
+        <span style="font-size: 10px; color: #9ca3af; margin-top: 2px;">${opt.desc}</span>
+      `;
+      item.onmouseenter = () => {
+        if (!isSelected) item.style.background = 'rgba(255, 255, 255, 0.08)';
+      };
+      item.onmouseleave = () => {
+        if (!isSelected) item.style.background = 'transparent';
+      };
+      item.onclick = (e) => {
+        e.stopPropagation();
+        menu.style.display = 'none';
+        window.__antigravity_set_lang_mode(opt.id);
+      };
+      menu.appendChild(item);
+    });
+
+    const divider = document.createElement('div');
+    divider.setAttribute('style', 'height: 1px; background: rgba(255, 255, 255, 0.1); margin: 4px 2px;');
+    menu.appendChild(divider);
+
+    const hideItem = document.createElement('div');
+    hideItem.setAttribute('style', `
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #9ca3af;
+      font-size: 10px;
+      text-align: center;
+      transition: background 0.15s;
+    `);
+    hideItem.innerText = '위젯 숨기기 (Ctrl+Shift+L로 계속 사용)';
+    hideItem.onmouseenter = () => { hideItem.style.background = 'rgba(255, 255, 255, 0.08)'; };
+    hideItem.onmouseleave = () => { hideItem.style.background = 'transparent'; };
+    hideItem.onclick = (e) => {
+      e.stopPropagation();
+      localStorage.setItem('antigravity_hide_lang_widget', 'true');
+      container.remove();
+      showToast('언어 위젯이 숨겨졌습니다. 단축키(Ctrl+Shift+L)는 계속 작동합니다.');
+    };
+    menu.appendChild(hideItem);
+
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+    };
+
+    document.addEventListener('click', () => {
+      menu.style.display = 'none';
+    });
+
+    container.appendChild(menu);
+    container.appendChild(btn);
+    document.body.appendChild(container);
+  }
+
   function start() {
     if (!document.body) {
       setTimeout(start, 200);
@@ -1556,8 +1755,12 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(start, 200));
+    document.addEventListener('DOMContentLoaded', () => {
+      setupLanguageSwitcher();
+      if (currentMode !== MODES.OFF) setTimeout(start, 200);
+    });
   } else {
-    start();
+    setupLanguageSwitcher();
+    if (currentMode !== MODES.OFF) start();
   }
 })();
