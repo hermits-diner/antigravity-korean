@@ -117,6 +117,33 @@
     "Select Folders": "폴더 선택 (Select Folders)",
     "Select folders": "폴더 선택 (Select folders)",
     "폴더 선택": "폴더 선택 (Select Folder)",
+    "Manage project folders, agent settings, and permissions.": "프로젝트 폴더, 에이전트 설정 및 권한을 관리합니다.",
+    "Folders": "폴더 (Folders)",
+    "folders": "폴더 (Folders)",
+    "Folder": "폴더 (Folder)",
+    "folder": "폴더 (Folder)",
+    "폴더": "폴더 (Folders)",
+    "Add Folder": "폴더 추가 (Add Folder)",
+    "Add folder": "폴더 추가 (Add Folder)",
+    "폴더 추가": "폴더 추가 (Add Folder)",
+    "No folders added yet.": "아직 추가된 폴더가 없습니다.",
+    "Inherit General": "일반 설정 상속 (Inherit General)",
+    "Local Permissions": "로컬 권한 (Local Permissions)",
+    "File Access Rules": "파일 접근 규칙 (File Access Rules)",
+    "Configure allowed and denied paths for file reads and writes.": "파일 읽기 및 쓰기에 허용되거나 차단된 경로를 설정합니다.",
+    "Terminal Commands": "터미널 명령어 (Terminal Commands)",
+    "Configure allowed terminal commands.": "허용할 터미널 명령어를 설정합니다.",
+    "MCP Tools": "MCP 도구 (MCP Tools)",
+    "Configure external tools via Model Context Protocol.": "Model Context Protocol을 통해 외부 도구를 설정합니다.",
+    "Also includes": "포함:",
+    "global settings": "전역 설정 (Global Settings)",
+    "when working in this project.": "(이 프로젝트에서 작업 시)",
+    "Danger Zone": "위험 구역 (Danger Zone)",
+    "위험 구역": "위험 구역 (Danger Zone)",
+    "Delete Project": "프로젝트 삭제 (Delete Project)",
+    "Delete project": "프로젝트 삭제 (Delete Project)",
+    "프로젝트 삭제": "프로젝트 삭제 (Delete Project)",
+    "삭제 (Delete) Project": "프로젝트 삭제 (Delete Project)",
     "General": "일반설정 (General)",
     "general": "일반설정 (General)",
     "Application": "앱설정 (Application)",
@@ -540,6 +567,10 @@
     {
       regex: /^Show (\d+) breakdowns?$/i,
       replacer: (_, num) => `세부 내역 ${num}개 보기 (Show breakdowns)`
+    },
+    {
+      regex: /^Permanently delete (.*?)\.?$/i,
+      replacer: (_, proj) => `프로젝트 ${proj}을(를) 영구적으로 삭제합니다.`
     }
   ];
 
@@ -572,6 +603,16 @@
         node.nodeValue = val.replace(trimmed, targetText);
       }
       return;
+    }
+
+    // delete-project-button 특수 처리
+    if (node.parentElement && node.parentElement.closest('[data-testid="delete-project-button"]')) {
+      const btn = node.parentElement.closest('[data-testid="delete-project-button"]');
+      if (btn && btn.innerText.trim() !== '프로젝트 삭제 (Delete Project)') {
+        processedNodes.add(node);
+        btn.innerText = '프로젝트 삭제 (Delete Project)';
+        return;
+      }
     }
 
     // 이미 변환된 문자열이면 중복 변환 방지
