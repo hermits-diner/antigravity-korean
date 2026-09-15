@@ -17,6 +17,7 @@ Thumbs.db
 unpacked/
 unpacked_cur/
 temp/
+app.asar
 
 # User images and archives
 *.jpg
