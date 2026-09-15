@@ -3,10 +3,42 @@ chcp 65001 > nul
 setlocal enabledelayedexpansion
 
 echo ========================================================
-echo        Google Antigravity 에코시스템 통합 한글 패치
+echo        Google Antigravity 에코시스템 통합 언어 패치
 echo         [Antigravity 2.0 & Antigravity IDE 지원]
 echo ========================================================
 echo.
+echo  원하시는 패치 모드를 선택하세요:
+echo.
+echo    [1] 순수 한글 모드 (Pure Korean) [권장/일반 사용자]
+echo        - 모든 메뉴, 탭, 버튼, 설명을 깔끔한 한국어로 표시합니다.
+echo        - 예: 일반설정, 앱설정, 사이드바, 단축키, 폴더
+echo.
+echo    [2] 한영 병기 모드 (Bilingual)   [개인/개발자용]
+echo        - 영문 설정을 잊지 않도록 영문 명칭을 함께 병기합니다.
+echo        - 예: 일반설정 (General), 앱설정 (Application), 폴더 (Folders)
+echo.
+echo    [3] 영문 원본 복원 (Restore Original)
+echo        - 패치를 제거하고 원래의 순수 영문 상태로 완벽히 복원합니다.
+echo.
+echo    [Q] 취소 및 종료 (Quit)
+echo.
+
+set "MODE_CHOICE=1"
+set /p "MODE_CHOICE=선택 번호를 입력하세요 (1/2/3/Q) [기본값: 1]: "
+
+if /i "!MODE_CHOICE!"=="Q" (
+    echo [*] 설치를 취소했습니다.
+    exit /b 0
+)
+
+if "!MODE_CHOICE!"=="3" (
+    if exist "%~dp0uninstall.bat" (
+        call "%~dp0uninstall.bat"
+    ) else (
+        echo [!] uninstall.bat 파일을 찾을 수 없습니다.
+    )
+    exit /b 0
+)
 
 set "APP20_DIR=%LOCALAPPDATA%\Programs\Antigravity\resources"
 set "APP20_EXE=%LOCALAPPDATA%\Programs\Antigravity\Antigravity.exe"
@@ -18,6 +50,21 @@ set "IDE_EXE=%IDE_DIR%\Antigravity IDE.exe"
 
 set "GEMINI_DIR=%USERPROFILE%\.gemini"
 set "RULE_FILE=%GEMINI_DIR%\GEMINI.md"
+
+set "LANG_MODE_NAME=순수 한글 모드"
+if "!MODE_CHOICE!"=="2" (
+    set "LANG_MODE_NAME=한영 병기 모드 (Bilingual)"
+    if exist "%~dp0korean_dict_bilingual.json" (
+        copy /y "%~dp0korean_dict_bilingual.json" "%~dp0korean_dict.json" >nul
+    )
+) else (
+    if exist "%~dp0korean_dict_pure.json" (
+        copy /y "%~dp0korean_dict_pure.json" "%~dp0korean_dict.json" >nul
+    )
+)
+echo.
+echo [*] 선택된 모드: !LANG_MODE_NAME!
+echo.
 
 echo [1/5] 실행 중인 Antigravity 프로세스를 확인하고 있습니다...
 tasklist /fi "imagename eq Antigravity.exe" 2>nul | find /i "Antigravity.exe" >nul
@@ -35,7 +82,7 @@ timeout /t 2 /nobreak >nul
 echo      - 프로세스 확인 완료.
 echo.
 
-echo [2/5] Antigravity 2.0 (데스크톱 앱) 한글 패치를 확인하고 적용합니다...
+echo [2/5] Antigravity 2.0 (데스크톱 앱) 언어 패치를 적용합니다...
 if exist "%APP20_DIR%" (
     if exist "%APP20_DIR%\app.asar" (
         if not exist "%APP20_DIR%\app.asar.original.bak" (
@@ -48,7 +95,10 @@ if exist "%APP20_DIR%" (
         if exist "%~dp0korean_dict.json" (
             copy /y "%~dp0korean_dict.json" "%APP20_DIR%\korean_dict.json" >nul
         )
-        echo      - Antigravity 2.0 UI 한글 패치 적용 완료.
+        if exist "%~dp0standalone_injector.js" (
+            copy /y "%~dp0standalone_injector.js" "%APP20_DIR%\standalone_injector.js" >nul
+        )
+        echo      - Antigravity 2.0 UI 패치 적용 완료 (!LANG_MODE_NAME!).
     ) else (
         echo      - [안내] 패치 파일(app.asar)을 찾을 수 없어 건너뜁니다.
     )
@@ -119,6 +169,9 @@ echo        (Antigravity 2.0과 Antigravity IDE의 모든 에이전트에 공통
 echo.
 
 echo [5/5] 모든 한글화 설정이 성공적으로 완료되었습니다!
+echo.
+echo [*] 참고: 앱 상단 메뉴바의 [언어 (Language)] 메뉴에서 언제든
+echo     [순수 한글] / [한영 병기] / [영문 원본] 모드를 자유롭게 전환할 수 있습니다.
 echo.
 echo 1) Antigravity 2.0 실행
 echo 2) Antigravity IDE 실행
