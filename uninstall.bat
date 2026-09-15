@@ -9,6 +9,8 @@ echo.
 
 set "TARGET_DIR=%LOCALAPPDATA%\Programs\Antigravity\resources"
 set "APP_EXE=%LOCALAPPDATA%\Programs\Antigravity\Antigravity.exe"
+set "GEMINI_DIR=%USERPROFILE%\.gemini"
+set "RULE_FILE=%GEMINI_DIR%\GEMINI.md"
 
 if not exist "%TARGET_DIR%" (
     echo [오류] Antigravity 설치 경로를 찾을 수 없습니다.
@@ -40,6 +42,12 @@ if exist "%TARGET_DIR%\app.asar.original.bak" (
 
 if exist "%TARGET_DIR%\korean_dict.json" (
     del /f /q "%TARGET_DIR%\korean_dict.json" >nul 2>&1
+)
+
+if exist "%RULE_FILE%.bak" (
+    copy /y "%RULE_FILE%.bak" "%RULE_FILE%" >nul 2>&1
+    del /f /q "%RULE_FILE%.bak" >nul 2>&1
+    echo      - AI 에이전트 규칙 파일(GEMINI.md)이 이전 백업으로 복원되었습니다.
 )
 echo.
 

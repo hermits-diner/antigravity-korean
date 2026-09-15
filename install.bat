@@ -3,12 +3,15 @@ chcp 65001 > nul
 setlocal enabledelayedexpansion
 
 echo ========================================================
-echo        Google Antigravity 한글 패치 설치 프로그램
+echo        Google Antigravity 통합 한글 패치 설치 프로그램
+echo       (UI 한국어화 + AI 에이전트 한국어 전역 규칙 설정)
 echo ========================================================
 echo.
 
 set "TARGET_DIR=%LOCALAPPDATA%\Programs\Antigravity\resources"
 set "APP_EXE=%LOCALAPPDATA%\Programs\Antigravity\Antigravity.exe"
+set "GEMINI_DIR=%USERPROFILE%\.gemini"
+set "RULE_FILE=%GEMINI_DIR%\GEMINI.md"
 
 if not exist "%TARGET_DIR%" (
     echo [오류] Antigravity 설치 경로를 찾을 수 없습니다.
@@ -19,7 +22,7 @@ if not exist "%TARGET_DIR%" (
     exit /b 1
 )
 
-echo [1/4] 실행 중인 Antigravity 프로세스를 확인하고 있습니다...
+echo [1/5] 실행 중인 Antigravity 프로세스를 확인하고 있습니다...
 tasklist /fi "imagename eq Antigravity.exe" 2>nul | find /i "Antigravity.exe" >nul
 if %errorlevel% equ 0 (
     echo Antigravity가 실행 중입니다. 안전한 패치를 위해 앱을 종료합니다...
@@ -29,7 +32,7 @@ if %errorlevel% equ 0 (
 echo      - 완료되었습니다.
 echo.
 
-echo [2/4] 원본 파일 백업을 생성하고 있습니다...
+echo [2/5] 원본 파일 백업을 생성하고 있습니다...
 if exist "%TARGET_DIR%\app.asar" (
     if not exist "%TARGET_DIR%\app.asar.original.bak" (
         copy /y "%TARGET_DIR%\app.asar" "%TARGET_DIR%\app.asar.original.bak" >nul
@@ -40,13 +43,13 @@ if exist "%TARGET_DIR%\app.asar" (
 )
 echo.
 
-echo [3/4] 한글 패치를 적용하고 있습니다...
+echo [3/5] 한글 패치(UI)를 적용하고 있습니다...
 if exist "%~dp0app.asar" (
     copy /y "%~dp0app.asar" "%TARGET_DIR%\app.asar" >nul
     if exist "%~dp0korean_dict.json" (
         copy /y "%~dp0korean_dict.json" "%TARGET_DIR%\korean_dict.json" >nul
     )
-    echo      - 패치 파일 복사 완료.
+    echo      - UI 패치 파일 복사 완료.
 ) else (
     if exist "%~dp0patcher.py" (
         echo      - patcher.py를 통해 직접 패치합니다...
@@ -67,7 +70,30 @@ if exist "%~dp0app.asar" (
 )
 echo.
 
-echo [4/4] 한글 패치가 성공적으로 설치되었습니다!
+echo [4/5] AI 에이전트 한국어 전역 규칙(Global Rules)을 설정하고 있습니다...
+if not exist "%GEMINI_DIR%" (
+    mkdir "%GEMINI_DIR%" >nul 2>&1
+)
+
+if exist "%RULE_FILE%" (
+    if not exist "%RULE_FILE%.bak" (
+        copy /y "%RULE_FILE%" "%RULE_FILE%.bak" >nul 2>&1
+    )
+)
+
+(
+echo # Global Rules
+echo.
+echo ## Language ^& Communication
+echo - 모든 대화, 질문 답변, 코드 분석 및 설명은 반드시 한국어로 작성합니다.
+echo - 생성하거나 수정하는 코드의 주석 및 문서(docstring^)는 명확한 한국어로 작성합니다.
+echo - 기술 용어는 필요 시 한글 표기와 원문을 병기합니다.
+) > "%RULE_FILE%"
+
+echo      - 에이전트 한국어 대화 및 주석 규칙 설정 완료 (%RULE_FILE%)
+echo.
+
+echo [5/5] 모든 한글화 설정이 성공적으로 완료되었습니다!
 echo.
 set /p RUN_APP="지금 바로 Antigravity를 실행하시겠습니까? (Y/N): "
 if /i "%RUN_APP%"=="Y" (
