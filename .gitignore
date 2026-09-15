@@ -18,7 +18,8 @@ unpacked/
 unpacked_cur/
 temp/
 
-# User images
+# User images and archives
 *.jpg
 *.jpeg
 *.png
+*.zip
